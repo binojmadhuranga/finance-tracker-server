@@ -6,7 +6,7 @@ export const authMiddleware = (
   res: Response,
   next: NextFunction
 ) => {
-  const token = req.headers.authorization?.split(" ")[1];
+  const token = req.cookies.token;
 
   if (!token) {
     return res.status(401).json({ error: "Unauthorized" });
@@ -17,6 +17,6 @@ export const authMiddleware = (
     (req as any).user = decoded;
     next();
   } catch {
-    res.status(401).json({ error: "Invalid token" });
+    return res.status(401).json({ error: "Invalid token" });
   }
 };
